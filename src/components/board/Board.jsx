@@ -11,15 +11,19 @@ const initialColumns = [
 	{ id: "todo", title: "Por hacer", taskIds: ["task-1", "task-2", "task-3"] },
 	{ id: "doing", title: "En progreso", taskIds: [] },
 	{ id: "review", title: "Revisión", taskIds: ["task-4"] },
-	// { id: "done", title: "Hecho", taskIds: [] },
-	// { id: "doneX2", title: "Doblemente hecho", taskIds: [] },
+	{ id: "1", title: "Hecho", taskIds: [] },
+	// { id: "2", title: "Hecho", taskIds: [] },
+	// { id: "3", title: "Hecho", taskIds: [] },
+	// { id: "4", title: "Hecho", taskIds: [] },
+	// { id: "5", title: "Hecho", taskIds: [] },
+	
 ];
 
 const initialTasks = {
 	"task-1": {
 		id: "task-1",
 		title: "Tarea 1",
-		description: "Descripción de la tarea 1",
+		description: "Descripción de la tarea 11111111111111",
 	},
 	"task-2": {
 		id: "task-2",
@@ -111,9 +115,10 @@ function Board() {
 				>
 					{(provided) => (
 						<div
-							className="d-flex gap-3 vh-100 content boardContainer overflow-auto"
+							className="d-flex gap-3 vh-100 content boardContainer overflow-auto flex-nowrap"
 							ref={provided.innerRef}
 							{...provided.droppableProps}
+							style={{ overflowX: "auto", overflowY: "hidden" }} 
 						>
 							{columns.map((column, index) => (
 								<Draggable
@@ -127,7 +132,8 @@ function Board() {
 											{...provided.draggableProps}
 											style={{
 												...provided.draggableProps.style,
-												minWidth: "50px",
+												minWidth: "280px",
+												marginRight: "1rem",
 											}}
 										>
 											{/* Handler para arrastrar la columna */}
