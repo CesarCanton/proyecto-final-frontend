@@ -1,15 +1,16 @@
 import { useState } from 'react'
-
-import './App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import Board from "../src/components/board/Board";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
+  
   return (
     <>
- 
+      <div className="container w-100">
+        <Board/>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
