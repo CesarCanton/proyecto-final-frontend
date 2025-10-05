@@ -3,7 +3,7 @@ import TaskCard from "./TaskCard";
 import { Card } from "react-bootstrap";
 import { Droppable } from "@hello-pangea/dnd";
 
-function Column({ id, title, tasks, dragHandleProps }) {
+function Column({ id, title, tasks, dragHandleProps, onEditTask, onDeleteTask }) {
   return (
     <Card className="p-3 shadow-sm vh-100">
       <Card.Body>
@@ -24,6 +24,8 @@ function Column({ id, title, tasks, dragHandleProps }) {
                   task={task}
                   draggableId={task.id}
                   index={index}
+                  onEdit={onEditTask}
+                  onDelete={onDeleteTask}
                 />
               ))}
               {provided.placeholder}
