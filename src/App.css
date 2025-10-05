@@ -1,10 +1,21 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Fondo principal oscuro y pantalla completa */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #1c1c1c;
+  color: #fff;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+/* Elimina el centrado y el ancho limitado */
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo con efecto naranja */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -12,12 +23,13 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #ff7f11aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #ff7f11aa);
 }
 
+/* Animación del logo */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -33,10 +45,47 @@
   }
 }
 
+/* Tarjetas con fondo oscuro */
 .card {
   padding: 2em;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  color: #fff;
+  border: 1px solid #444;
 }
 
+/* Texto auxiliar */
 .read-the-docs {
-  color: #888;
+  color: #ff7f11;
+}
+
+/* Enlaces */
+a {
+  font-weight: 500;
+  color: #ff7f11;
+  text-decoration: none;
+}
+a:hover {
+  color: #ffa94d;
+}
+
+/* Botones */
+button {
+  border-radius: 8px;
+  border: 1px solid #ff7f11;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #1a1a1a;
+  color: #ff7f11;
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+button:hover {
+  background-color: #ff7f11;
+  color: #fff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto #ff7f11;
 }
