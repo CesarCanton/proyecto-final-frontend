@@ -3,32 +3,45 @@ import TaskCard from "./TaskCard";
 import { Card } from "react-bootstrap";
 import { Droppable } from "@hello-pangea/dnd";
 
-function Column({ id, title, tasks, dragHandleProps, onEditTask, onDeleteTask }) {
+function Column({ id, name, tasks, onEditTask, onDeleteTask, dragHandleProps }) {
   return (
-    <Card className="p-3 shadow-sm vh-100">
+    <Card className="p-2 shadow-sm">
       <Card.Body>
-        {/* Handler para mover la columna */}
-        <Card.Title {...dragHandleProps}>{title}</Card.Title>
-
-        {/* Droppable para las tareas */}
-        <Droppable droppableId={id} type="task">
-          {(provided) => (
+        {/* SOLO el título tiene dragHandleProps */}
+        <Card.Title {...dragHandleProps}
+      style={{
+      cursor: "grab",
+      padding: "8px 12px",
+      marginBottom: "12px",
+      borderRadius: "6px",
+      fontWeight: "bold",
+      zIndex: 2,
+      position: "relative"
+    }}
+        >{name}</Card.Title>
+        <Droppable droppableId={id.toString()} type="task">
+          {(dropProvided) => (
             <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{ minHeight: "100px" }} // asegura espacio aunque esté vacío
+              ref={dropProvided.innerRef}
+              {...dropProvided.droppableProps}
+              style={{
+                minHeight: "100px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
             >
-              {tasks.map((task, index) => (
+              {tasks.map((task, idx) => (
                 <TaskCard
                   key={task.id}
                   task={task}
-                  draggableId={task.id}
-                  index={index}
+                  draggableId={task.id.toString()} // <-- asegúrate que sea string
+                  index={idx}
                   onEdit={onEditTask}
                   onDelete={onDeleteTask}
                 />
               ))}
-              {provided.placeholder}
+              {dropProvided.placeholder}
             </div>
           )}
         </Droppable>
@@ -38,3 +51,4 @@ function Column({ id, title, tasks, dragHandleProps, onEditTask, onDeleteTask })
 }
 
 export default Column;
+// filepath: c:\Users\cesar\OneDrive\Desktop\Proyecto\src\components\board\Column.jsx
