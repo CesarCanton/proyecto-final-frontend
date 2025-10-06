@@ -2,13 +2,14 @@
 .boardWrapper {
   display: flex;
   height: calc(100vh - 56px);
+  width: 100%;
   background-color: #1c1c1c;
   color: #fff;
 }
 
 /* Panel lateral */
 .dashContainer {
-  width: 280px;
+  width: 300px;
   background-color: #111;
   padding: 2rem 1rem;
   border-right: 2px solid #ff7f11;
