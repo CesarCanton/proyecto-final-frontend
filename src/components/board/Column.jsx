@@ -7,9 +7,10 @@ function Column({ id, name, tasks, onEditTask, onDeleteTask, dragHandleProps }) 
   return (
     <Card className="p-2 shadow-sm">
       <Card.Body>
-        {/* SOLO el título tiene dragHandleProps */}
-        <Card.Title {...dragHandleProps}
-      style={{
+        {/* capacidad para mover la columna deshabilitada */}
+        {/* <Card.Title {...dragHandleProps} */}
+<Card.Title
+style={{
       cursor: "grab",
       padding: "8px 12px",
       marginBottom: "12px",
