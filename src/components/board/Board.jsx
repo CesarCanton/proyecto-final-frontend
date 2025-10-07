@@ -29,7 +29,6 @@ function Board({ boardId, onBoardSelect }) {
 	const handleColumnCreated = async () => {
 		await loadBoard();
 	};
-
 	// Función para manejar la actualización de columna
 	const handleColumnUpdated = (updatedColumn) => {
 		setColumns((prevColumns) =>
@@ -40,9 +39,20 @@ function Board({ boardId, onBoardSelect }) {
 			)
 		);
 	};
+
 	// Función para manejar la eliminación de columna
 	const handleColumnDeleted = async () => {
 		await loadBoard();
+	};
+	// Función para manejar la edición de tarea
+	const handleEditTask = (task) => {
+		setTaskToEdit(task);
+		setShowEditModal(true);
+	};
+	// Función para manejar la eliminación de tarea
+	const handleDeleteTask = (task) => {
+		setTaskToDelete(task);
+		setShowDeleteModal(true);
 	};
 	// Carga columnas y tareas juntas
 	const loadBoard = async () => {
@@ -212,6 +222,8 @@ function Board({ boardId, onBoardSelect }) {
 															.map((taskId) => tasks[taskId])
 															.filter((task) => task)}
 														onAddTask={loadBoard} 
+														onEditTask={handleEditTask}
+														onDeleteTask={handleDeleteTask}
 														onColumnUpdated={handleColumnUpdated}
 														onDeleteColumn={handleColumnDeleted}
 														// dragHandleProps={draggableProvided.dragHandleProps}
