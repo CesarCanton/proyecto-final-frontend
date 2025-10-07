@@ -5,11 +5,13 @@ import { Droppable } from "@hello-pangea/dnd";
 import "./boardStyles.css";
 import { updateColumn } from "../../services/columnService";
 import DeleteColumnModal from "../ui/colums/ModalDeleteColumn";
+import TaskAddModal2 from "../ui/tasks/TaskAddModal2";
 
 function Column({
 	id,
 	name,
 	tasks,
+	onAddTask,
 	onEditTask,
 	onDeleteTask,
 	onColumnUpdated,
@@ -21,6 +23,23 @@ function Column({
 	const [editingName, setEditingName] = useState(name);
 	const [isLoading, setIsLoading] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showAddTaskModal, setShowAddTaskModal] = useState(false)
+
+
+	  // Funciones para el modal de tarea
+	const handleOpenAddTask = () => {
+	  setShowAddTaskModal(true);
+	};	
+	const handleCloseAddTask = () => {
+	  setShowAddTaskModal(false);
+	};
+  
+	const handleTaskAdded = () => {
+    handleCloseAddTask();
+    if (onAddTask) {
+      onAddTask();
+    }
+  	};
 
 	const handleEditColumn = () => {
 		setIsEditing(true);
@@ -212,6 +231,10 @@ function Column({
 							</div>
 						)}
 					</Droppable>
+					<button onClick={handleOpenAddTask}
+						className="btn btn-outline-light btn-sm m-auto d-block mt-4">
+						+ Agregar Tarea
+					</button>
 				</Card.Body>
 			</Card>
 			<DeleteColumnModal
@@ -221,6 +244,14 @@ function Column({
 				onColumnDeleted={onDeleteColumn}
 				hasTasksInColumn={hasTasksInColumn}
 			/>
+
+			 <TaskAddModal2
+        		show={showAddTaskModal}
+        		handleClose={handleCloseAddTask}
+        		refresh={handleTaskAdded}
+        		column_id={id}
+        		name={name}
+      		/>
 		</>
 	);
 }

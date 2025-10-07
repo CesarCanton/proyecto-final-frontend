@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { createTask, getColumnsWithTasks } from "../../../services/taskAPI";
 
-export default function TaskAddModal({ show, handleClose, refresh, boardId}) {
-  const [columns, setColumns] = useState([]);
+export default function TaskAddModal({ show, handleClose, refresh, column_id, name}) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     priority: "medium",
     progress_percentage: 0,
     due_date: "",
-    column_id: 1,
+    column: column_id,
+    columnName: name, // Nuevo campo para el nombre de la columna
     assigned_to: "",
     created_by: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  // 🔹 Cargar columnas
-  useEffect(() => {
-    const fetchColumns = async () => {
-      try {
-        const data = await getColumnsWithTasks(boardId);
-        setColumns(data);
-        if (data.length > 0) {
-          setFormData((prev) => ({ ...prev, column_id: data[0].id }));
-        }
-      } catch (error) {
-        console.error("Error cargando columnas:", error);
-      }
-    };
-
-    if (show) fetchColumns();
-  }, [show, boardId]);
+   useEffect(() => {
+    if (show) {
+      setFormData({
+        title: "",
+        description: "",
+        priority: "medium",
+        progress_percentage: 0,
+        due_date: "",
+        column_id: parseInt(column_id, 10), // Asegurarse de que sea un número
+        assigned_to: "",
+        created_by: "",
+      });
+      setErrors({});
+    }
+  }, [show, column_id]);
 
   const validarFormulario = () => {
     const newErrors = {};
@@ -48,6 +47,7 @@ export default function TaskAddModal({ show, handleClose, refresh, boardId}) {
       await createTask({
         ...formData,
         progress_percentage: parseInt(formData.progress_percentage, 10),
+        column: column_id, // Asegurarse de usar el ID correcto
       });
       handleClose();
       refresh();
@@ -153,19 +153,18 @@ export default function TaskAddModal({ show, handleClose, refresh, boardId}) {
               {/* 🔹 Campo columna con nombre y ID */}
               <div className="col-md-6">
                 <label className="form-label">Columna</label>
-                <select
-                  className="form-select"
-                  value={formData.column_id}
-                  onChange={(e) =>
-                    setFormData({ ...formData, column_id: parseInt(e.target.value, 10) })
-                  }
-                >
-                  {columns.map((col) => (
-                    <option key={col.id} value={col.id}>
-                      {col.name} (ID {col.id})
-                    </option>
-                  ))}
-                </select>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={formData.columnName} // lo que el usuario ve
+                        readOnly
+                    />
+            {/* Valor real que se enviará */}
+                    <input
+                      type="hidden"
+                      name="column"
+                      value={formData.column} // el id o valor real
+                    />
               </div>
             </form>
           </div>
