@@ -9,8 +9,8 @@ import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
 import TaskDeleteModal from "../ui/tasks/taskDeleteModal";
 
-const boardId = 2; // GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
-function Board() {
+// GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
+function Board({ boardId, onBoardSelect }) {
 	const [columns, setColumns] = useState([]);
 	const [tasks, setTasks] = useState({});
 	const [loading, setLoading] = useState(true);
@@ -40,6 +40,11 @@ function Board() {
 	};
 	// Carga columnas y tareas juntas
 	const loadBoard = async () => {
+		if (!boardId) {
+			setLoading(false);
+			return;
+		}
+
 		try {
 			setLoading(true);
 			const apiData = await getColumnsWithTasks(boardId);
@@ -77,7 +82,7 @@ function Board() {
 
 	useEffect(() => {
 		loadBoard();
-	}, []);
+	}, [boardId]);
 
 	const onDragEnd = (result) => {
 		//Source: de donde se arrastra
@@ -85,7 +90,7 @@ function Board() {
 		//Type: tipo de elemento que se esta moviendo (columna o tarea)
 		const { source, destination, type } = result;
 		if (!destination) return;
-//Logica para mover columnas (Desahbilitada por ahora)
+		//Logica para mover columnas (Desahbilitada por ahora)
 		if (type === "column") {
 			const newColumns = Array.from(columns);
 			const [moved] = newColumns.splice(source.index, 1);
@@ -93,7 +98,7 @@ function Board() {
 			setColumns(newColumns);
 			return;
 		}
-//Logica para mover tareas
+		//Logica para mover tareas
 		if (type === "task") {
 			// Encontrar los índices de las columnas de origen y destino
 			const sourceColIndex = columns.findIndex(
@@ -104,9 +109,9 @@ function Board() {
 			);
 			// Si no se encuentran las columnas, salir
 			if (sourceColIndex === -1 || destColIndex === -1) return;
-		
+
 			// Obtener las columnas de origen y destino
-			
+
 			const sourceCol = columns[sourceColIndex];
 			const destCol = columns[destColIndex];
 
@@ -138,6 +143,25 @@ function Board() {
 			setColumns(newColumns);
 		}
 	};
+
+	// Mostrar mensaje si no hay board seleccionado
+	if (!boardId) {
+		return (
+			<>
+				{/* <NavbarComponent/> */}
+				<div className="boardWrapper">
+					<Dashboard onBoardSelect={onBoardSelect} />
+					<div className="boardContent d-flex justify-content-center align-items-center">
+						<div className="text-center">
+							<h3>Selecciona un tablero</h3>
+							<p>Elige un tablero del sidebar para comenzar a trabajar</p>
+						</div>
+					</div>
+				</div>
+			</>
+		);
+	}
+
 	return (
 		<>
 			<NavbarComponent
@@ -145,7 +169,7 @@ function Board() {
 				onColumnCreated={handleColumnCreated}
 			/>
 			<div className="boardWrapper">
-				<Dashboard />
+				<Dashboard onBoardSelect={onBoardSelect} selectedBoardId={boardId} />
 				<div className="boardContent">
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable
@@ -178,9 +202,9 @@ function Board() {
 													<Column
 														id={column.id}
 														name={column.name}
-														tasks={column.taskIds.map(
-															(taskId) => tasks[taskId]
-														)}
+														tasks={column.taskIds
+															.map((taskId) => tasks[taskId])
+															.filter((task) => task)}
 														onColumnUpdated={handleColumnUpdated}
 														onDeleteColumn={handleColumnDeleted}
 														// dragHandleProps={draggableProvided.dragHandleProps}

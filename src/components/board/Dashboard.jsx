@@ -4,8 +4,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./boardStyles.css";
 import { useBoards } from "../../hooks/useBoards";
 
-function Dashboard() {
+function Dashboard({ onBoardSelect, selectedBoardId }) {
   const { boards, loading, addBoard, removeBoard, updateBoard } = useBoards();
+  
   const [editingId, setEditingId] = useState(null);
   const [editedName, setEditedName] = useState("");
 
@@ -19,11 +20,17 @@ function Dashboard() {
     setEditingId(null);
   };
 
+  const handleBoardClick = (boardId) => {
+    if (onBoardSelect) {
+      onBoardSelect(boardId);
+    }
+  };
+
   return (
     <div className="dashContainer">
       <div className="sidebar d-flex flex-column p-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h4 className="mb-0 text-orange">🗂️ Tableros</h4>
+          <h4 className="mb-0 text-orange"><i class="fa-solid fa-table-columns"></i>Tableros</h4> 
           <button
             className="btn btn-orange rounded-circle"
             title="Agregar tablero"
@@ -40,7 +47,9 @@ function Dashboard() {
             {boards.map((board) => (
               <li
                 key={board.id}
-                className="d-flex justify-content-between align-items-center mb-3 p-2 board-item"
+                className={`d-flex justify-content-between align-items-center mb-3 p-2 board-item ${
+                  selectedBoardId === board.id ? 'active' : ''
+                }`}
               >
                 {editingId === board.id ? (
                   <>
@@ -65,7 +74,13 @@ function Dashboard() {
                   </>
                 ) : (
                   <>
-                    <span className="text-light fw-medium">{board.name}</span>
+                    <span 
+                      className="text-light fw-medium board-name"
+                      onClick={() => handleBoardClick(board.id)}
+                      style={{ cursor: 'pointer', flexGrow: 1 }}
+                    >
+                      {board.name}
+                    </span>
                     <div>
                       <button
                         className="btn btn-sm btn-outline-light me-2"

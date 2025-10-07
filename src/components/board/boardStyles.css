@@ -6,6 +6,48 @@
   background-color: #1c1c1c;
   color: #fff;
 }
+.board-item {
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.board-item:hover {
+    background-color: #333;
+    border-color: #ff7f11;
+}
+
+.board-item.active {
+    background-color: #ff7f11;
+    border-color: #ff7f11;
+}
+
+.board-item.active .board-name {
+    color: #fff;
+    font-weight: bold;
+}
+
+.board-name {
+    color: #fff;
+    font-weight: 500;
+    flex-grow: 1;
+    user-select: none;
+}
+
+.delete-board-btn {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.delete-board-btn:hover {
+    opacity: 1;
+}
 
 /* Panel lateral */
 .dashContainer {
