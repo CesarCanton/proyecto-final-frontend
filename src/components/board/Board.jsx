@@ -6,12 +6,10 @@ import Dashboard from "./Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
-import { getColumns } from "../../services/columnService";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
 import TaskDeleteModal from "../ui/tasks/taskDeleteModal";
-// import ModalEditColumn from "../ui/colums/ModalEditColumn";
 
-const boardId = 3; // GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
+const boardId = 2; // GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
 function Board() {
 	const [columns, setColumns] = useState([]);
 	const [tasks, setTasks] = useState({});
@@ -20,23 +18,12 @@ function Board() {
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [taskToDelete, setTaskToDelete] = useState(null);
-	
-	// Función para manejar la creación de nueva columna
-	const handleColumnCreated = async (newColumn) => {
-		const formattedColumn = {
-			id: newColumn.id.toString(),
-			board_id: newColumn.board_id || newColumn.boardId,
-			name: newColumn.name,
-			order: newColumn.order || columns.length,
-			color: newColumn.color || null,
-			created_at: newColumn.created_at || new Date().toISOString(),
-			update_at: newColumn.update_at || new Date().toISOString(),
-			taskIds: [], // Nueva columna sin tareas
-		};
 
-		setColumns((prevColumns) => [...prevColumns, formattedColumn]);
-		await loadBoard(); // Recargar el tablero para asegurar consistencia
+	// Función para manejar la creación de nueva columna
+	const handleColumnCreated = async () => {
+		await loadBoard();
 	};
+
 	// Función para manejar la actualización de columna
 	const handleColumnUpdated = (updatedColumn) => {
 		setColumns((prevColumns) =>
@@ -46,6 +33,10 @@ function Board() {
 					: col
 			)
 		);
+	};
+	// Función para manejar la eliminación de columna
+	const handleColumnDeleted = async () => {
+		await loadBoard();
 	};
 	// Carga columnas y tareas juntas
 	const loadBoard = async () => {
@@ -89,9 +80,12 @@ function Board() {
 	}, []);
 
 	const onDragEnd = (result) => {
+		//Source: de donde se arrastra
+		//Destination: a donde se suelta
+		//Type: tipo de elemento que se esta moviendo (columna o tarea)
 		const { source, destination, type } = result;
 		if (!destination) return;
-
+//Logica para mover columnas (Desahbilitada por ahora)
 		if (type === "column") {
 			const newColumns = Array.from(columns);
 			const [moved] = newColumns.splice(source.index, 1);
@@ -99,22 +93,27 @@ function Board() {
 			setColumns(newColumns);
 			return;
 		}
-
+//Logica para mover tareas
 		if (type === "task") {
+			// Encontrar los índices de las columnas de origen y destino
 			const sourceColIndex = columns.findIndex(
 				(col) => col.id === source.droppableId
 			);
 			const destColIndex = columns.findIndex(
 				(col) => col.id === destination.droppableId
 			);
+			// Si no se encuentran las columnas, salir
 			if (sourceColIndex === -1 || destColIndex === -1) return;
-
+		
+			// Obtener las columnas de origen y destino
+			
 			const sourceCol = columns[sourceColIndex];
 			const destCol = columns[destColIndex];
 
 			const sourceTaskIds = Array.from(sourceCol.taskIds);
 			const [movedTaskId] = sourceTaskIds.splice(source.index, 1);
 
+			//Movimiento entre columnas
 			if (sourceCol.id !== destCol.id) {
 				const destTaskIds = Array.from(destCol.taskIds);
 				destTaskIds.splice(destination.index, 0, movedTaskId);
@@ -142,7 +141,7 @@ function Board() {
 	return (
 		<>
 			<NavbarComponent
-				boardId={boardId}// GER 2.PASAR EL ID DEL TABLERO AL COMPONENTE
+				boardId={boardId} // GER 2.PASAR EL ID DEL TABLERO AL COMPONENTE
 				onColumnCreated={handleColumnCreated}
 			/>
 			<div className="boardWrapper">
@@ -182,7 +181,8 @@ function Board() {
 														tasks={column.taskIds.map(
 															(taskId) => tasks[taskId]
 														)}
-														   onColumnUpdated={handleColumnUpdated}
+														onColumnUpdated={handleColumnUpdated}
+														onDeleteColumn={handleColumnDeleted}
 														// dragHandleProps={draggableProvided.dragHandleProps}
 													/>
 												</div>
@@ -210,12 +210,6 @@ function Board() {
 				refresh={loadBoard} // Esta función recarga las tareas después de eliminar
 				task={taskToDelete}
 			/>
-			{/* <ModalEditColumn
-                show={showEditColumnModal}
-                onHide={() => setShowEditColumnModal(false)}
-                column={columnToEdit}
-                onColumnUpdated={handleColumnUpdated}
-            /> */}
 		</>
 	);
 }
