@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { deleteTask } from "../../services/taskAPI";
+import { deleteTask } from "../../../services/taskAPI";
 
 export default function TaskDeleteModal({ 
   show, 

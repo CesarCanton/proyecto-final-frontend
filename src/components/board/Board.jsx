@@ -7,19 +7,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import { getColumns } from "../../services/columnService";
-import TaskEditModal from "../tasks/taskEditModal";
-import TaskDeleteModal from "../tasks/taskDeleteModal";
+import TaskEditModal from "../ui/tasks/TaskEditModal";
+import TaskDeleteModal from "../ui/tasks/taskDeleteModal";
+// import ModalEditColumn from "../ui/colums/ModalEditColumn";
 
-// const initialColumns = [
-// 	{ id: "1", name: "Por hacer", taskIds: [] },
-// 	{ id: "2", name: "En progreso", taskIds: [] },
-// 	{ id: "3", name: "Revisión", taskIds: [] },
-// 	// { id: "4", nombre: "Revisión", taskIds: [] },
-// 	// { id: "5", nombre: "Revisión", taskIds: [] },
-// ];
-const boardId = 2;
+const boardId = 3; // GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
 function Board() {
-	// const [columns, setColumns] = useState([]);
 	const [columns, setColumns] = useState([]);
 	const [tasks, setTasks] = useState({});
 	const [loading, setLoading] = useState(true);
@@ -27,17 +20,33 @@ function Board() {
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [taskToDelete, setTaskToDelete] = useState(null);
+	
+	// Función para manejar la creación de nueva columna
+	const handleColumnCreated = async (newColumn) => {
+		const formattedColumn = {
+			id: newColumn.id.toString(),
+			board_id: newColumn.board_id || newColumn.boardId,
+			name: newColumn.name,
+			order: newColumn.order || columns.length,
+			color: newColumn.color || null,
+			created_at: newColumn.created_at || new Date().toISOString(),
+			update_at: newColumn.update_at || new Date().toISOString(),
+			taskIds: [], // Nueva columna sin tareas
+		};
 
-	const handleEditTask = (task) => {
-		setTaskToEdit(task);
-		setShowEditModal(true);
+		setColumns((prevColumns) => [...prevColumns, formattedColumn]);
+		await loadBoard(); // Recargar el tablero para asegurar consistencia
 	};
-
-	const handleDeleteTask = (task) => {
-		setTaskToDelete(task);
-		setShowDeleteModal(true);
+	// Función para manejar la actualización de columna
+	const handleColumnUpdated = (updatedColumn) => {
+		setColumns((prevColumns) =>
+			prevColumns.map((col) =>
+				col.id === updatedColumn.id.toString()
+					? { ...col, name: updatedColumn.name }
+					: col
+			)
+		);
 	};
-
 	// Carga columnas y tareas juntas
 	const loadBoard = async () => {
 		try {
@@ -80,59 +89,62 @@ function Board() {
 	}, []);
 
 	const onDragEnd = (result) => {
-  const { source, destination, type } = result;
-  if (!destination) return;
+		const { source, destination, type } = result;
+		if (!destination) return;
 
-  if (type === "column") {
-    const newColumns = Array.from(columns);
-    const [moved] = newColumns.splice(source.index, 1);
-    newColumns.splice(destination.index, 0, moved);
-    setColumns(newColumns);
-    return;
-  }
+		if (type === "column") {
+			const newColumns = Array.from(columns);
+			const [moved] = newColumns.splice(source.index, 1);
+			newColumns.splice(destination.index, 0, moved);
+			setColumns(newColumns);
+			return;
+		}
 
-  if (type === "task") {
-    const sourceColIndex = columns.findIndex(
-      (col) => col.id === source.droppableId
-    );
-    const destColIndex = columns.findIndex(
-      (col) => col.id === destination.droppableId
-    );
-    if (sourceColIndex === -1 || destColIndex === -1) return;
+		if (type === "task") {
+			const sourceColIndex = columns.findIndex(
+				(col) => col.id === source.droppableId
+			);
+			const destColIndex = columns.findIndex(
+				(col) => col.id === destination.droppableId
+			);
+			if (sourceColIndex === -1 || destColIndex === -1) return;
 
-    const sourceCol = columns[sourceColIndex];
-    const destCol = columns[destColIndex];
+			const sourceCol = columns[sourceColIndex];
+			const destCol = columns[destColIndex];
 
-    const sourceTaskIds = Array.from(sourceCol.taskIds);
-    const [movedTaskId] = sourceTaskIds.splice(source.index, 1);
+			const sourceTaskIds = Array.from(sourceCol.taskIds);
+			const [movedTaskId] = sourceTaskIds.splice(source.index, 1);
 
-    if (sourceCol.id !== destCol.id) {
-      const destTaskIds = Array.from(destCol.taskIds);
-      destTaskIds.splice(destination.index, 0, movedTaskId);
+			if (sourceCol.id !== destCol.id) {
+				const destTaskIds = Array.from(destCol.taskIds);
+				destTaskIds.splice(destination.index, 0, movedTaskId);
 
-      const newColumns = [...columns];
-      newColumns[sourceColIndex] = { ...sourceCol, taskIds: sourceTaskIds };
-      newColumns[destColIndex] = { ...destCol, taskIds: destTaskIds };
-      setColumns(newColumns);
+				const newColumns = [...columns];
+				newColumns[sourceColIndex] = { ...sourceCol, taskIds: sourceTaskIds };
+				newColumns[destColIndex] = { ...destCol, taskIds: destTaskIds };
+				setColumns(newColumns);
 
-      updateTask(movedTaskId, { column_id: destCol.id })
-        .then(() => loadBoard())
-        .catch((error) => {
-          console.error("Error actualizando columna de la tarea:", error);
-        });
-      return;
-    }
+				updateTask(movedTaskId, { column_id: destCol.id })
+					.then(() => loadBoard())
+					.catch((error) => {
+						console.error("Error actualizando columna de la tarea:", error);
+					});
+				return;
+			}
 
-    // Solo reordenamiento dentro de la misma columna
-    sourceTaskIds.splice(destination.index, 0, movedTaskId);
-    const newColumns = [...columns];
-    newColumns[sourceColIndex] = { ...sourceCol, taskIds: sourceTaskIds };
-    setColumns(newColumns);
-  }
-};
+			// Solo reordenamiento dentro de la misma columna
+			sourceTaskIds.splice(destination.index, 0, movedTaskId);
+			const newColumns = [...columns];
+			newColumns[sourceColIndex] = { ...sourceCol, taskIds: sourceTaskIds };
+			setColumns(newColumns);
+		}
+	};
 	return (
 		<>
-			<NavbarComponent />
+			<NavbarComponent
+				boardId={boardId}// GER 2.PASAR EL ID DEL TABLERO AL COMPONENTE
+				onColumnCreated={handleColumnCreated}
+			/>
 			<div className="boardWrapper">
 				<Dashboard />
 				<div className="boardContent">
@@ -170,9 +182,8 @@ function Board() {
 														tasks={column.taskIds.map(
 															(taskId) => tasks[taskId]
 														)}
-														onEditTask={handleEditTask}
-														onDeleteTask={handleDeleteTask}
-														dragHandleProps={draggableProvided.dragHandleProps}
+														   onColumnUpdated={handleColumnUpdated}
+														// dragHandleProps={draggableProvided.dragHandleProps}
 													/>
 												</div>
 											)}
@@ -199,6 +210,12 @@ function Board() {
 				refresh={loadBoard} // Esta función recarga las tareas después de eliminar
 				task={taskToDelete}
 			/>
+			{/* <ModalEditColumn
+                show={showEditColumnModal}
+                onHide={() => setShowEditColumnModal(false)}
+                column={columnToEdit}
+                onColumnUpdated={handleColumnUpdated}
+            /> */}
 		</>
 	);
 }

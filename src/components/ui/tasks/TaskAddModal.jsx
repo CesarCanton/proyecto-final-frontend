@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createTask, getColumnsWithTasks } from "../../services/taskAPI";
+import { createTask, getColumnsWithTasks } from "../../../services/taskAPI";
 
 export default function TaskAddModal({ show, handleClose, refresh, boardId = 2 }) {
   const [columns, setColumns] = useState([]);

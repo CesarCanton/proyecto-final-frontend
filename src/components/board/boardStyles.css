@@ -66,6 +66,32 @@
 .columnWrapper {
   min-width: 280px;
 }
+.column-header:hover {
+    background-color: #f8f9fa;
+}
+
+.edit-column-btn {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.edit-column-btn:hover {
+    opacity: 1;
+}
+
+.column-title {
+    user-select: none;
+}
+.columnTitleEditing {
+    width: 100%;
+    background-color: #11111100 !important;
+    color:#fff !important;
+    border: none !important;
+    font-size: 1.50rem;
+    font-weight: bold;
+    outline: none !important;
+    box-shadow: none !important;
+}
 
 /* Input de edición */
 input.form-control-sm {
@@ -101,6 +127,6 @@ input.form-control-sm {
   color: #fff !important;
 }
 
-.custom-navbar .nav-link:hover {
+.custom-navbar .nav-link:hover, .navbar-brand:hover {
   color: #ff7f11 !important;
 }

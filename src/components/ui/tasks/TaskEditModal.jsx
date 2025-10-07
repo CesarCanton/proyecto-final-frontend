@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateTask } from "../../services/taskAPI";
+import { updateTask } from "../../../services/taskAPI";
 
 export default function TaskEditModal({ show, handleClose, refresh, tarea }) {
   const [formData, setFormData] = useState({ ...tarea });
