@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css";
-import Board from "../src/components/board/Board";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import BoardContainer from './components/board/BoardContainer';
+import "./App.css";
 
 function App() {
   
   return (
     <>
-      <div className="container w-100">
-        <Board/>
+      <div>
+        < BoardContainer
+        />
       </div>
     </>
   );
