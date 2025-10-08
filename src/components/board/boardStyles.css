@@ -6,6 +6,8 @@
 	background-color: #1c1c1c;
 	color: #fff;
 }
+
+/* Items del board */
 .board-item {
 	background-color: #222;
 	border: 1px solid #333;
@@ -53,6 +55,7 @@
 .delete-board-btn:hover {
 	opacity: 1;
 }
+
 /* Barra lateral */
 .dashContainer {
 	width: 350px;
@@ -66,10 +69,12 @@
 	overflow-x: hidden; 
 	box-sizing: border-box; 
 }
+
 .sidebar {
 	width: 100%;
 	overflow-wrap: break-word; 
 }
+
 .sidebar h4 {
 	color: #ff7f11;
 	font-weight: bold;
@@ -114,10 +119,25 @@
 	align-items: flex-start;
 }
 
-/* Columnas */
+/* Layout específico para vistas */
+.boardContent[data-view="table"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.boardContent[data-view="columns"] {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+/* Asegurar que TableView ocupe todo el espacio disponible */
+.boardContent > * {
+  width: 100%;
+}
+
+/* Columnas - Vista Columnas */
 .columnsContainer {
 	display: flex;
-
 	gap: 20px;
 	min-height: 100%;
 }
@@ -125,6 +145,7 @@
 .columnWrapper {
 	min-width: 280px;
 }
+
 .column-header:hover {
 	background-color: #f8f9fa;
 }
@@ -146,6 +167,7 @@
 	text-overflow: ellipsis; 
 	flex-grow: 1; 
 }
+
 .columnTitleEditing {
 	width: 100%;
 	background-color: #11111100 !important;
@@ -157,12 +179,13 @@
 	box-shadow: none !important;
 	overflow-wrap: break-word !important;
 }
+
 .column-action-buttons:hover {
 	border-color: #ff7f11;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Tarjetas */
+/* Tarjetas de tareas */
 .task-card {
 	background-color: #222;
 	border: 1px solid #333;
@@ -172,11 +195,13 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: all 0.2s ease;
 }
+
 .task-card:hover {
 	background-color: #333;
 	border-color: #ff7f11;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 .task-card-title {
 	color: #ff7f11;
 	font-weight: 600;
@@ -221,4 +246,151 @@ input.form-control-sm {
 .custom-navbar .nav-link:hover,
 .navbar-brand:hover {
 	color: #ff7f11 !important;
+}
+
+/* ===== ESTILOS PARA TABLEVIEW ===== */
+
+.table-view-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-view-content {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-view-toolbar {
+  border: 1px solid #ff7f11;
+  background-color: #1c1c1c !important;
+  margin-bottom: 1rem;
+}
+
+.bg-orange {
+  background-color: #ff7f11 !important;
+}
+
+.border-orange {
+  border-color: #ff7f11 !important;
+}
+
+.btn-orange {
+  background-color: #ff7f11;
+  border-color: #ff7f11;
+  color: white;
+}
+
+.btn-orange:hover {
+  background-color: #e6710f;
+  border-color: #e6710f;
+  color: white;
+}
+
+.btn-outline-orange {
+  color: #ff7f11;
+  border-color: #ff7f11;
+}
+
+.btn-outline-orange:hover {
+  background-color: #ff7f11;
+  border-color: #ff7f11;
+  color: white;
+}
+
+.text-orange {
+  color: #ff7f11 !important;
+}
+
+/* ===== ESTILOS PARA TABLA UNIFICADA ===== */
+
+.table-container {
+  width: 100%;
+}
+
+.table-unified {
+  font-size: 0.875rem;
+  background-color: #1c1c1c;
+}
+
+.table-unified th {
+  padding: 0.75rem 0.5rem;
+  font-size: 0.8rem;
+  border-bottom: 2px solid #ff7f11;
+  background-color: #ff7f11;
+  color: white;
+}
+
+.table-unified td {
+  padding: 0.6rem 0.5rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #333;
+  background-color: transparent;
+}
+
+.task-table-row {
+  transition: all 0.2s ease;
+  background-color: transparent;
+}
+
+.task-table-row:hover {
+  background-color: #2a2a2a !important;
+}
+
+.dragging {
+  background-color: rgba(255, 127, 17, 0.2) !important;
+  border: 1px dashed #ff7f11 !important;
+  opacity: 0.8;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
+}
+
+.table-unified .progress {
+  height: 8px;
+  background-color: #444;
+}
+
+.table-unified .progress-bar {
+  background-color: #ff7f11;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent;
+  border-bottom-color: #333;
+  color: #fff;
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .table-unified {
+    font-size: 0.8rem;
+  }
+  
+  .table-unified th,
+  .table-unified td {
+    padding: 0.4rem 0.3rem;
+  }
+  
+  .dashContainer {
+    width: 300px;
+    min-width: 300px;
+  }
+  
+  .boardContent {
+    padding: 1rem;
+  }
+}
+
+.dragging-over {
+  background-color: rgba(255, 127, 17, 0.1) !important;
+  border: 2px dashed #ff7f11 !important;
 }
