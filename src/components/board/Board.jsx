@@ -8,6 +8,8 @@ import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
 import TaskDeleteModal from "../ui/tasks/taskDeleteModal";
+import TaskAddModal from "../ui/tasks/TaskAddModal";
+import TaskAddModal2 from "../ui/tasks/TaskAddModal2";
 
 // GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
 function Board({ boardId, onBoardSelect }) {
@@ -18,12 +20,15 @@ function Board({ boardId, onBoardSelect }) {
 	const [taskToEdit, setTaskToEdit] = useState(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [taskToDelete, setTaskToDelete] = useState(null);
+	const [showAddModal, setShowAddModal] = useState(false);
+    const [selectedColumnId, setSelectedColumnId] = useState(null);
+
+	
 
 	// Función para manejar la creación de nueva columna
 	const handleColumnCreated = async () => {
 		await loadBoard();
 	};
-
 	// Función para manejar la actualización de columna
 	const handleColumnUpdated = (updatedColumn) => {
 		setColumns((prevColumns) =>
@@ -34,9 +39,20 @@ function Board({ boardId, onBoardSelect }) {
 			)
 		);
 	};
+
 	// Función para manejar la eliminación de columna
 	const handleColumnDeleted = async () => {
 		await loadBoard();
+	};
+	// Función para manejar la edición de tarea
+	const handleEditTask = (task) => {
+		setTaskToEdit(task);
+		setShowEditModal(true);
+	};
+	// Función para manejar la eliminación de tarea
+	const handleDeleteTask = (task) => {
+		setTaskToDelete(task);
+		setShowDeleteModal(true);
 	};
 	// Carga columnas y tareas juntas
 	const loadBoard = async () => {
@@ -205,6 +221,9 @@ function Board({ boardId, onBoardSelect }) {
 														tasks={column.taskIds
 															.map((taskId) => tasks[taskId])
 															.filter((task) => task)}
+														onAddTask={loadBoard} 
+														onEditTask={handleEditTask}
+														onDeleteTask={handleDeleteTask}
 														onColumnUpdated={handleColumnUpdated}
 														onDeleteColumn={handleColumnDeleted}
 														// dragHandleProps={draggableProvided.dragHandleProps}
@@ -224,14 +243,14 @@ function Board({ boardId, onBoardSelect }) {
 			<TaskEditModal
 				show={showEditModal}
 				handleClose={() => setShowEditModal(false)}
-				refresh={loadBoard} // Esta función recarga las tareas después de editar
+				refresh={loadBoard} 
 				tarea={taskToEdit}
 			/>
 
 			<TaskDeleteModal
 				show={showDeleteModal}
 				handleClose={() => setShowDeleteModal(false)}
-				refresh={loadBoard} // Esta función recarga las tareas después de eliminar
+				refresh={loadBoard} 
 				task={taskToDelete}
 			/>
 		</>
