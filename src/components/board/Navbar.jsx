@@ -4,12 +4,14 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import CreateColumnModal from "../ui/colums/ModalAddColumn";
 import "./boardStyles.css";
 import { getBoardById } from "../../services/boardService";
+import { useNavigate } from "react-router-dom";
 
 //GER 3.RECIBE EL ID DEL TABLERO
 function NavbarComponent({ boardId, onColumnCreated }) {
 	const [showModal, setShowModal] = useState(false);
 	const [boardName, setBoardName] = useState("Tablero de Proyectos");
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const handleShowModal = () => setShowModal(true);
 	const handleCloseModal = () => setShowModal(false);
@@ -32,6 +34,15 @@ function NavbarComponent({ boardId, onColumnCreated }) {
 			setLoading(false);
 		}
 	};
+	
+
+const goToTasksPage = () => {
+  if (boardId) {
+    navigate(`/tasks/${boardId}`);
+  } else {
+    navigate(`/tasks`);
+  }
+};
 
 	// Cargar el nombre del tablero cuando cambia el boardId
 	useEffect(() => {
@@ -59,9 +70,10 @@ function NavbarComponent({ boardId, onColumnCreated }) {
 						)}
 					</Navbar.Brand>
 					<div className="d-flex gap-2">
-            	<button className="btn btn-outline-light btn-sm">
-							Vista tabla
-						</button>
+            	<button className="btn btn-outline-light btn-sm" onClick={goToTasksPage}>
+  Vista tabla
+</button>
+
 						{/* boton para agregar columna */}
 						<button
 							className="btn btn-outline-light btn-sm"

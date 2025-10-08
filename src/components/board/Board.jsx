@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
-import TaskDeleteModal from "../ui/tasks/taskDeleteModal";
+import TaskDeleteModal from "../ui/tasks/TaskDeleteModal";
 import TaskAddModal from "../ui/tasks/TaskAddModal";
 import TaskAddModal2 from "../ui/tasks/TaskAddModal2";
 

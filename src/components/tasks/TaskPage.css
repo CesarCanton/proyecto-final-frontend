@@ -1,0 +1,51 @@
+/* 👇 Activa el scroll horizontal SOLO en pantallas menores a 992px */
+@media (max-width: 991.98px) {
+  .table-scroll-md {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Aumenta el ancho mínimo de la tabla para forzar scroll */
+  .table-scroll-md table {
+    min-width: 900px;
+  }
+
+  /* Hace que las celdas tengan más espacio y texto más legible */
+  .table-scroll-md th,
+  .table-scroll-md td {
+    padding: 12px 10px !important;
+    font-size: 0.9rem !important;
+    white-space: nowrap;
+  }
+
+  .table-scroll-md tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  /* 👉 Botón de agregar: que ocupe casi todo el ancho y con espacio abajo */
+  .btn-agregar-responsive {
+    width: 100% !important;
+    margin-top: 10px;
+    padding: 12px !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* 👇 En pantallas grandes, diseño normal */
+@media (min-width: 992px) {
+  .table-scroll-md {
+    overflow-x: visible !important;
+  }
+
+  .table-scroll-md th,
+  .table-scroll-md td {
+    padding: 10px 8px;
+    white-space: normal;
+  }
+
+  /* Botón normal en pantallas grandes */
+  .btn-agregar-responsive {
+    width: auto;
+    margin-top: 0;
+  }
+}
