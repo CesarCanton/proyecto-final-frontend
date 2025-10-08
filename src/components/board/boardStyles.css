@@ -104,6 +104,18 @@
 	align-items: center;
 }
 
+.board-title {
+  font-size: 1.75rem; /* Más grande que fw-bold normal */
+  font-weight: 700;
+  color: #ff7f11;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
 .sidebar li span {
 	color: #fff;
 	font-weight: 500;
@@ -194,6 +206,94 @@
 	margin-bottom: 0.75rem;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	transition: all 0.2s ease;
+}
+
+.board-name {
+  max-width: 160px; /* o menos si el contenedor es estrecho */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.loading-text {
+  animation: pulseText 1.2s infinite ease-in-out;
+  font-weight: bold;
+  color: #ff7f11;
+}
+
+@keyframes pulseText {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+
+
+.add-task-button {
+  display: block;
+  margin: 2rem auto;
+  padding: 0.9rem 2.5rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+  border-radius: 10px;
+  min-width: 280px; /* ← más ancho */
+  max-width: 90%;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 8px rgba(255, 127, 17, 0.3);
+}
+
+.add-task-button:hover {
+  background-color: #ff7f11;
+  color: black;
+}
+
+.btn-outline-light {
+  border-color: #ff7f11;
+  color: white;
+}
+
+.btn-outline-light:hover {
+  background-color: #ff7f11;
+  color: black;
+}
+
+
+.dropdown-menu {
+  background-color: #1c1c1c !important;
+  border: 1px solid #ff7f11;
+  color: white;
+}
+
+.dropdown-menu .dropdown-item {
+  color: white;
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item.active {
+  background-color: #ff7f11;
+  color: black;
+}
+
+
+.border-top-orange {
+  border-top: 1px solid #ff7f11; /* Ajusta el grosor y color si lo deseas */
+}
+
+/* Elimina el fondo azul de botones Bootstrap */
+.btn-primary,
+.btn-secondary {
+  background-color: #ff7f11 !important;
+  border-color: #ff7f11 !important;
+  color: white !important;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  background-color: #e76f00 !important;
+  border-color: #e76f00 !important;
+  color: white !important;
 }
 
 .task-card:hover {

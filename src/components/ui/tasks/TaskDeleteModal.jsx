@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { deleteTask } from "../../../services/taskAPI";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "../../board/boardStyles.css"; // Asegúrate que este CSS esté cargado
 
 export default function TaskDeleteModal({ 
   show, 
@@ -16,7 +18,7 @@ export default function TaskDeleteModal({
     try {
       await deleteTask(task.id);
       handleClose();
-      refresh(); // Actualiza la lista de tareas
+      refresh();
     } catch (error) {
       console.error("Error eliminando tarea:", error.response?.data || error);
     } finally {
@@ -29,9 +31,11 @@ export default function TaskDeleteModal({
   return (
     <div className="modal show d-block" tabIndex="-1">
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Eliminar Tarea</h5>
+        <div className="modal-content bg-dark text-white border-orange">
+          <div className="modal-header bg-orange text-white">
+            <h5 className="modal-title">
+              <i className="fas fa-trash-alt me-2"></i> Eliminar Tarea
+            </h5>
             <button 
               type="button" 
               className="btn-close" 
@@ -42,30 +46,32 @@ export default function TaskDeleteModal({
           
           <div className="modal-body">
             {task ? (
-              <div className="alert alert-warning">
-                <h6 className="alert-heading text-center">¿Estás seguro de que quieres eliminar esta tarea?</h6>
+              <div className="alert alert-warning bg-dark text-white border-orange">
+                <h6 className="alert-heading text-orange text-center">
+                  ¿Estás seguro de que quieres eliminar esta tarea?
+                </h6>
                 <p className="mb-0 text-center">
-                  <strong>"{task.title}"</strong> será eliminada permanentemente.
+                  <strong className="text-orange">"{task.title}"</strong> será eliminada permanentemente.<br />
                   Esta acción no se puede deshacer.
                 </p>
               </div>
             ) : (
-              <div className="alert alert-danger">
+              <div className="alert alert-danger bg-dark text-white border-orange">
                 Error: No se ha seleccionado ninguna tarea para eliminar.
               </div>
             )}
           </div>
 
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-orange">
             <button 
-              className="btn btn-secondary" 
+              className="btn btn-outline-orange d-flex align-items-center gap-1" 
               onClick={handleClose}
               disabled={isDeleting}
             >
-              Cancelar
+              <i className="fas fa-times"></i> Cancelar
             </button>
             <button 
-              className="btn btn-danger" 
+              className="btn btn-orange d-flex align-items-center gap-1" 
               onClick={eliminarTarea}
               disabled={isDeleting || !task}
             >
@@ -75,7 +81,9 @@ export default function TaskDeleteModal({
                   Eliminando...
                 </>
               ) : (
-                "Eliminar"
+                <>
+                  <i className="fas fa-trash-alt"></i> Eliminar
+                </>
               )}
             </button>
           </div>

@@ -6,7 +6,7 @@ import { useBoards } from "../../hooks/useBoards";
 
 function Dashboard({ onBoardSelect, selectedBoardId }) {
   const { boards, loading, addBoard, removeBoard, updateBoard } = useBoards();
-  
+
   const [editingId, setEditingId] = useState(null);
   const [editedName, setEditedName] = useState("");
 
@@ -16,9 +16,11 @@ function Dashboard({ onBoardSelect, selectedBoardId }) {
   };
 
   const handleSaveClick = (id) => {
-    updateBoard(id, { name: editedName });
+    const trimmedName = editedName.trim().toUpperCase().slice(0, 25);
+    updateBoard(id, { name: trimmedName });
     setEditingId(null);
   };
+
 
   const handleBoardClick = (boardId) => {
     if (onBoardSelect) {
@@ -30,11 +32,11 @@ function Dashboard({ onBoardSelect, selectedBoardId }) {
     <div className="dashContainer">
       <div className="sidebar d-flex flex-column p-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h4 className="mb-0 text-orange"><i className="fa-solid fa-table-columns"></i>Tableros</h4> 
+          <h4 className="mb-0 text-orange"><i className="fa-solid fa-table-columns"></i>Tableros</h4>
           <button
             className="btn btn-orange rounded-circle"
             title="Agregar tablero"
-            onClick={() => addBoard({ name: "Nuevo tablero", description: "" })}
+            onClick={() => addBoard({ name: "Nuevo tablero".toUpperCase().slice(0, 25), description: "" })}
           >
             <i className="fas fa-plus"></i>
           </button>
@@ -47,14 +49,14 @@ function Dashboard({ onBoardSelect, selectedBoardId }) {
             {boards.map((board) => (
               <li
                 key={board.id}
-                className={`d-flex justify-content-between align-items-center mb-3 p-2 board-item ${
-                  selectedBoardId === board.id ? 'active' : ''
-                }`}
+                className={`d-flex justify-content-between align-items-center mb-3 p-2 board-item ${selectedBoardId === board.id ? 'active' : ''
+                  }`}
               >
                 {editingId === board.id ? (
                   <>
                     <input
                       type="text"
+                      maxLength={25}
                       className="form-control form-control-sm me-2"
                       value={editedName}
                       onChange={(e) => setEditedName(e.target.value)}
@@ -74,12 +76,12 @@ function Dashboard({ onBoardSelect, selectedBoardId }) {
                   </>
                 ) : (
                   <>
-                    <span 
+                    <span
                       className="text-light fw-medium board-name"
                       onClick={() => handleBoardClick(board.id)}
                       style={{ cursor: 'pointer', flexGrow: 1 }}
                     >
-                      {board.name}
+                      {board.name.toUpperCase()}
                     </span>
                     <div>
                       <button

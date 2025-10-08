@@ -5,7 +5,7 @@ import { PencilSquare, Trash } from "react-bootstrap-icons";
 import TaskAddModal2 from "../ui/tasks/TaskAddModal2";
 import "./boardStyles.css";
 
-function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
+function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd, refresh }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("all");
   const [selectedAssignee, setSelectedAssignee] = useState("all");
@@ -14,7 +14,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
   // Obtener todas las tareas con información de columna
-  const allTasks = columns.flatMap(column => 
+  const allTasks = columns.flatMap(column =>
     column.taskIds
       .map(taskId => tasks[taskId])
       .filter(task => task)
@@ -26,9 +26,9 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
   );
 
   // Filtrar tareas
-  const filteredTasks = allTasks.filter(task => 
+  const filteredTasks = allTasks.filter(task =>
     (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     task.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      task.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (selectedPriority === "all" || task.priority === selectedPriority) &&
     (selectedAssignee === "all" || task.assigned_to === selectedAssignee) &&
     (selectedColumn === "all" || task.columnId === selectedColumn)
@@ -50,7 +50,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
 
   const handleTaskAdded = () => {
     handleCloseAddTask();
-    window.location.reload();
+    if (refresh) refresh(); // 
   };
 
   const clearFilters = () => {
@@ -65,7 +65,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
   // Colores de prioridad
   const priorityColors = {
     high: "danger",
-    medium: "warning", 
+    medium: "warning",
     low: "success",
   };
 
@@ -107,26 +107,26 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 Prioridad
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedPriority("all")}
                   className={selectedPriority === "all" ? "active" : ""}
                 >
                   Todas
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedPriority("high")}
                   className={selectedPriority === "high" ? "active" : ""}
                 >
                   🔴 Alta
                 </Dropdown.Item>
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedPriority("medium")}
                   className={selectedPriority === "medium" ? "active" : ""}
                 >
                   🟡 Media
                 </Dropdown.Item>
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedPriority("low")}
                   className={selectedPriority === "low" ? "active" : ""}
                 >
@@ -142,7 +142,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 Asignado
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedAssignee("all")}
                   className={selectedAssignee === "all" ? "active" : ""}
                 >
@@ -150,8 +150,8 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 {assignees.map(assignee => (
-                  <Dropdown.Item 
-                    key={assignee} 
+                  <Dropdown.Item
+                    key={assignee}
                     onClick={() => setSelectedAssignee(assignee)}
                     className={selectedAssignee === assignee ? "active" : ""}
                   >
@@ -168,7 +168,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 Columna
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item 
+                <Dropdown.Item
                   onClick={() => setSelectedColumn("all")}
                   className={selectedColumn === "all" ? "active" : ""}
                 >
@@ -176,7 +176,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 {columnOptions.map(column => (
-                  <Dropdown.Item 
+                  <Dropdown.Item
                     key={column.id}
                     onClick={() => setSelectedColumn(column.id)}
                     className={selectedColumn === column.id ? "active" : ""}
@@ -189,8 +189,8 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
 
             {/* Botón limpiar filtros */}
             {hasActiveFilters && (
-              <Button 
-                variant="outline-light" 
+              <Button
+                variant="outline-light"
                 size="sm"
                 onClick={clearFilters}
               >
@@ -201,8 +201,8 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
           </div>
 
           {/* Lado derecho: Botón nueva tarea */}
-          <Button 
-            variant="orange" 
+          <Button
+            variant="orange"
             size="sm"
             onClick={() => handleOpenAddTask(columns[0]?.id)}
           >
@@ -245,7 +245,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                 </thead>
                 <Droppable droppableId="table-view" type="task">
                   {(provided) => (
-                    <tbody 
+                    <tbody
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
@@ -280,11 +280,14 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                                 <td>
                                   <div className="d-flex align-items-start">
                                     <div className="flex-grow-1">
-                                      <strong className="text-orange d-block">{task.title}</strong>
+                                      <strong className="text-orange d-block">
+                                        {task.title.toUpperCase()}
+                                      </strong>
+
                                       {task.description && (
                                         <small className="text-muted">
-                                          {task.description.length > 60 
-                                            ? `${task.description.substring(0, 60)}...` 
+                                          {task.description.length > 60
+                                            ? `${task.description.substring(0, 60)}...`
                                             : task.description}
                                         </small>
                                       )}
@@ -325,8 +328,8 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
 
                                 {/* Columna */}
                                 <td className="align-middle">
-                                  <Badge 
-                                    bg={getColumnColor(task.columnId)} 
+                                  <Badge
+                                    bg={getColumnColor(task.columnId)}
                                     className="text-white"
                                   >
                                     {task.columnName}
@@ -344,7 +347,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd }) {
                                       title="Editar tarea"
                                     />
                                     <Trash
-                                      role="button" 
+                                      role="button"
                                       className="text-danger"
                                       size={18}
                                       onClick={() => onDeleteTask(task)}

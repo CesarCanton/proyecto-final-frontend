@@ -26,20 +26,20 @@ function Column({
 	const [showAddTaskModal, setShowAddTaskModal] = useState(false)
 
 
-	  // Funciones para el modal de tarea
+	// Funciones para el modal de tarea
 	const handleOpenAddTask = () => {
-	  setShowAddTaskModal(true);
-	};	
-	const handleCloseAddTask = () => {
-	  setShowAddTaskModal(false);
+		setShowAddTaskModal(true);
 	};
-  
+	const handleCloseAddTask = () => {
+		setShowAddTaskModal(false);
+	};
+
 	const handleTaskAdded = () => {
-    handleCloseAddTask();
-    if (onAddTask) {
-      onAddTask();
-    }
-  	};
+		handleCloseAddTask();
+		if (onAddTask) {
+			onAddTask();
+		}
+	};
 
 	const handleEditColumn = () => {
 		setIsEditing(true);
@@ -136,8 +136,7 @@ function Column({
 								/>
 								<div className="d-flex gap-1">
 									<Button
-										variant="outline-secondary"
-										className="btn btn-sm"
+										className="btn btn-outline-orange btn-sm"
 										onClick={handleSaveColumn}
 										disabled={isLoading}
 										style={{ padding: "2px 6px", fontSize: "12px" }}
@@ -145,7 +144,7 @@ function Column({
 										<i className="fas fa-check"></i>
 									</Button>
 									<Button
-										variant="outline-secondary"
+										className="btn btn-outline-orange btn-sm"
 										onClick={handleCancelEdit}
 										disabled={isLoading}
 										style={{ padding: "2px 6px", fontSize: "12px" }}
@@ -162,27 +161,16 @@ function Column({
 								{isHovered && (
 									<div className="d-flex gap-1">
 										<Button
-											variant="outline-secondary"
-											size="sm"
+											className="btn btn-outline-orange btn-sm edit-column-btn"
 											onClick={handleEditColumn}
-											className="edit-column-btn"
-											style={{
-												padding: "2px 8px",
-												fontSize: "12px",
-												marginLeft: "8px",
-											}}
+											style={{ padding: "2px 8px", fontSize: "12px", marginLeft: "8px" }}
 										>
 											<i className="fas fa-pencil-alt"></i>
 										</Button>
 										<Button
-											variant="outline-danger"
-											size="sm"
+											className="btn btn-outline-orange btn-sm delete-column-btn"
 											onClick={handleDeleteColumn}
-											className="delete-column-btn"
-											style={{
-												padding: "2px 8px",
-												fontSize: "12px",
-											}}
+											style={{ padding: "2px 8px", fontSize: "12px" }}
 											title={
 												hasTasksInColumn > 0
 													? `Esta columna tiene ${hasTasksInColumn} tarea(s)`
@@ -219,7 +207,7 @@ function Column({
 							>
 								{tasks.map((task, idx) => (
 									<TaskCard
-									
+
 										key={task.id}
 										task={task}
 										draggableId={task.id.toString()}
@@ -232,9 +220,12 @@ function Column({
 							</div>
 						)}
 					</Droppable>
-					<button onClick={handleOpenAddTask}
-						className="btn btn-outline-light btn-sm m-auto d-block mt-4">
-						+ Agregar Tarea
+					<button
+						onClick={handleOpenAddTask}
+						className="btn btn-outline-orange btn-lg add-task-button"
+					>
+						<i className="fas fa-plus me-2"></i>
+						Agregar Tarea
 					</button>
 				</Card.Body>
 			</Card>
@@ -246,13 +237,13 @@ function Column({
 				hasTasksInColumn={hasTasksInColumn}
 			/>
 
-			 <TaskAddModal2
-        		show={showAddTaskModal}
-        		handleClose={handleCloseAddTask}
-        		refresh={handleTaskAdded}
-        		column_id={id}
-        		name={name}
-      		/>
+			<TaskAddModal2
+				show={showAddTaskModal}
+				handleClose={handleCloseAddTask}
+				refresh={handleTaskAdded}
+				column_id={id}
+				name={name}
+			/>
 		</>
 	);
 }

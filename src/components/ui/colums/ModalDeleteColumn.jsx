@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button, Alert, Spinner } from 'react-bootstrap';
 import { deleteColumn } from '../../../services/columnService';
+import '../../board/boardStyles.css'; // Asegúrate que esté cargado
 
 function DeleteColumnModal({ show, onHide, column, onColumnDeleted, hasTasksInColumn }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,13 +13,9 @@ function DeleteColumnModal({ show, onHide, column, onColumnDeleted, hasTasksInCo
 
     try {
       await deleteColumn(column.id);
-      
-      // Llamar al callback para actualizar la lista de columnas
       if (onColumnDeleted) {
         onColumnDeleted(column.id);
       }
-      
-      // Cerrar el modal
       onHide();
     } catch (err) {
       console.error('Error eliminando columna:', err);
@@ -35,57 +32,76 @@ function DeleteColumnModal({ show, onHide, column, onColumnDeleted, hasTasksInCo
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Eliminar Columna</Modal.Title>
-      </Modal.Header>
-      
-      <Modal.Body>
-        {error && (
-          <Alert variant="danger" className="mb-3">
-            {error}
-          </Alert>
-        )}
-        
-        {hasTasksInColumn ? (
-          <>
-            <Alert variant="warning" className="mb-3">
-              <i className="fas fa-exclamation-triangle me-2"></i>
-              <strong>¡Atención!</strong> Esta columna contiene tareas.
-            </Alert>
-            <p>
-              La columna <strong>"{column?.name}"</strong> contiene <strong>{hasTasksInColumn}</strong> tarea(s).
-            </p>
-            <p className="text-danger">
-              <strong>¿Estás seguro de que deseas eliminar esta columna y todas sus tareas?</strong>
-            </p>
-            <p className="text-muted">
-              <small>Esta acción no se puede deshacer. Se eliminarán permanentemente la columna y todas las tareas que contiene.</small>
-            </p>
-          </>
-        ) : (
-          <>
-            <p>
-              ¿Estás seguro de que deseas eliminar la columna <strong>"{column?.name}"</strong>?
-            </p>
-            <p className="text-muted">
-              <small>Esta columna no contiene tareas. Esta acción no se puede deshacer.</small>
-            </p>
-          </>
-        )}
-      </Modal.Body>
-      
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose} disabled={isLoading}>
-          Cancelar
-        </Button>
-        <Button 
-          variant={hasTasksInColumn ? "danger" : "warning"}
-          onClick={handleDelete}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Eliminando...' : (hasTasksInColumn ? 'Eliminar Columna y Tareas' : 'Eliminar Columna')}
-        </Button>
-      </Modal.Footer>
+      <div className="modal-content bg-dark text-white border-orange">
+        <div className="modal-header bg-orange text-white border-bottom border-orange">
+          <h5 className="modal-title">
+            <i className="fas fa-trash-alt me-2"></i> Eliminar Columna
+          </h5>
+          <button type="button" className="btn-close" onClick={handleClose}></button>
+        </div>
+
+        <div className="modal-body">
+          {error && (
+            <div className="alert alert-danger border-orange bg-dark text-white">
+              {error}
+            </div>
+          )}
+
+          {hasTasksInColumn ? (
+            <>
+              <div className="alert alert-warning border-orange bg-dark text-white">
+                <i className="fas fa-exclamation-triangle me-2 text-orange"></i>
+                <strong className="text-orange">¡Atención!</strong> Esta columna contiene tareas.
+              </div>
+              <p>
+                La columna <strong className="text-orange">"{column?.name}"</strong> contiene <strong>{hasTasksInColumn}</strong> tarea(s).
+              </p>
+              <p className="text-danger">
+                <strong>¿Estás seguro de que deseas eliminar esta columna y todas sus tareas?</strong>
+              </p>
+              <p className="text-muted">
+                <small>Esta acción no se puede deshacer. Se eliminarán permanentemente la columna y todas las tareas que contiene.</small>
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                ¿Estás seguro de que deseas eliminar la columna <strong className="text-orange">"{column?.name}"</strong>?
+              </p>
+              <p className="text-muted">
+                <small>Esta columna no contiene tareas. Esta acción no se puede deshacer.</small>
+              </p>
+            </>
+          )}
+        </div>
+
+        <div className="modal-footer border-top border-orange">
+          <Button
+            className="btn btn-outline-orange d-flex align-items-center gap-1"
+            onClick={handleClose}
+            disabled={isLoading}
+          >
+            <i className="fas fa-times"></i> Cancelar
+          </Button>
+          <Button
+            className="btn btn-orange d-flex align-items-center gap-1"
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Spinner animation="border" size="sm" className="me-2" />
+                Eliminando...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-trash-alt"></i>
+                {hasTasksInColumn ? 'Eliminar Columna y Tareas' : 'Eliminar Columna'}
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
     </Modal>
   );
 }

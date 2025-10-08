@@ -47,12 +47,14 @@ function CreateColumnModal({ show, onHide, boardId, onColumnCreated }) {
 
 	return (
 		<Modal show={show} onHide={handleClose} centered>
-			<Modal.Header closeButton>
-				<Modal.Title>Agregar Nueva Columna</Modal.Title>
-			</Modal.Header>
-
 			<Form onSubmit={handleSubmit}>
-				<Modal.Body>
+				<Modal.Header closeButton className="bg-orange text-white">
+					<Modal.Title>
+						<i className="fas fa-columns me-2"></i> Agregar Nueva Columna
+					</Modal.Title>
+				</Modal.Header>
+
+				<Modal.Body className="bg-dark text-white">
 					{error && (
 						<Alert variant="danger" className="mb-3">
 							{error}
@@ -60,9 +62,10 @@ function CreateColumnModal({ show, onHide, boardId, onColumnCreated }) {
 					)}
 
 					<Form.Group className="mb-3">
-						<Form.Label>Nombre de la Columna</Form.Label>
+						<Form.Label className="text-orange">Nombre de la Columna</Form.Label>
 						<Form.Control
 							type="text"
+							className="bg-dark text-white border-orange"
 							placeholder="Ingresa el nombre de la columna"
 							value={columnName}
 							onChange={(e) => setColumnName(e.target.value)}
@@ -72,20 +75,21 @@ function CreateColumnModal({ show, onHide, boardId, onColumnCreated }) {
 					</Form.Group>
 				</Modal.Body>
 
-				<Modal.Footer>
+				<Modal.Footer className="bg-dark border-top border-orange">
 					<Button
-						variant="secondary"
+						className="btn btn-outline-orange d-flex align-items-center gap-1"
 						onClick={handleClose}
 						disabled={isLoading}
 					>
-						Cancelar
+						<i className="fas fa-times"></i> Cancelar
 					</Button>
+
 					<Button
-						variant="primary"
+						className="btn btn-orange d-flex align-items-center gap-1"
 						type="submit"
 						disabled={isLoading || !columnName.trim()}
 					>
-						{isLoading ? "Creando..." : "Crear Columna"}
+						<i className="fas fa-check"></i> {isLoading ? "Creando..." : "Crear Columna"}
 					</Button>
 				</Modal.Footer>
 			</Form>
