@@ -5,7 +5,8 @@ import CreateColumnModal from "../ui/colums/ModalAddColumn";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./boardStyles.css";
 import { getBoardById } from "../../services/boardService";
-//GER 3.RECIBE EL ID DEL TABLERO
+
+
 function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
   const [showModal, setShowModal] = useState(false);
   const [boardName, setBoardName] = useState("Tablero de Proyectos");
@@ -78,7 +79,7 @@ function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
       <CreateColumnModal
         show={showModal}
         onHide={handleCloseModal}
-        boardId={boardId} // GER 4.PASAR EL ID DEL TABLERO PERO EN ESTE CASO LO ESTOY ENVIANDO A UN MODAL
+        boardId={boardId} 
         onColumnCreated={onColumnCreated}
       />
     </>

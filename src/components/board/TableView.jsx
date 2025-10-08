@@ -83,7 +83,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd, refres
     <>
       {/* Barra de herramientas COMPACTA */}
       <div className="table-view-toolbar mb-3 p-3 bg-dark rounded">
-        <div className="d-flex justify-content-between align-items-center gap-3">
+        <div className="d-flex justify-content-between gap-3">
           {/* Lado izquierdo: Búsqueda y Filtros */}
           <div className="d-flex align-items-center gap-2 flex-wrap">
             {/* Barra de búsqueda */}
@@ -285,7 +285,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd, refres
                                       </strong>
 
                                       {task.description && (
-                                        <small className="text-muted">
+                                        <small className="text-white-50">
                                           {task.description.length > 60
                                             ? `${task.description.substring(0, 60)}...`
                                             : task.description}

@@ -8,10 +8,11 @@ import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
 import TaskDeleteModal from "../ui/tasks/TaskDeleteModal";
-import TaskAddModal from "../ui/tasks/TaskAddModal";
-import TaskAddModal2 from "../ui/tasks/TaskAddModal2";
+
 import TableView from "./TableView";
-// GER 1.AQUI PUEDES CAMBIAR EL ID DEL TABLERO
+
+
+
 function Board({ boardId, onBoardSelect }) {
   const [columns, setColumns] = useState([]);
   const [tasks, setTasks] = useState({});
@@ -20,13 +21,12 @@ function Board({ boardId, onBoardSelect }) {
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedColumnId, setSelectedColumnId] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [viewMode, setViewMode] = useState("columns"); // 'columns' | 'table'  // Función para manejar la creación de nueva columna
+  const [viewMode, setViewMode] = useState("columns"); 
   const handleColumnCreated = async () => {
     await loadBoard();
   };
+
   // Función para manejar la actualización de columna
   const handleColumnUpdated = (updatedColumn) => {
     setColumns((prevColumns) =>
@@ -167,6 +167,8 @@ function Board({ boardId, onBoardSelect }) {
     }
   };
 
+   
+
 
   // Mostrar mensaje si no hay board seleccionado
   if (!boardId) {
@@ -197,6 +199,8 @@ function Board({ boardId, onBoardSelect }) {
       </>
     );
   }
+ 
+ 
 
   return (
     <>
@@ -259,7 +263,6 @@ function Board({ boardId, onBoardSelect }) {
                               onDeleteTask={handleDeleteTask}
                               onColumnUpdated={handleColumnUpdated}
                               onDeleteColumn={handleColumnDeleted}
-                            // dragHandleProps={draggableProvided.dragHandleProps}
                             />
                           </div>
                         )}
