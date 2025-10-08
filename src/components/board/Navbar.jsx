@@ -26,7 +26,7 @@ function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
     try {
       setLoading(true);
       const board = await getBoardById(boardId);
-      setBoardName(boardName.toUpperCase()
+      setBoardName(board?.name?.toUpperCase()
         || "Tablero de Proyectos");
     } catch (error) {
       console.error("Error loading board name:", error);
@@ -44,7 +44,7 @@ function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
     <>
       <Navbar className="custom-navbar shadow-sm w-100 border-bottom border-top-orange">
         <Container fluid className="navbar-flex">
-          <div className="navbar-title">
+          <div className="navbar-title blink-title">
             {loading ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

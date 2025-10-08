@@ -296,24 +296,24 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd, refres
                                 </td>
 
                                 {/* Asignado */}
-                                <td className="align-middle">
+                                <td className="align-middle text-white">
                                   <small>{task.assigned_to}</small>
                                 </td>
 
                                 {/* Prioridad */}
-                                <td className="align-middle">
+                                <td className="align-middle text-white">
                                   <Badge bg={priorityColors[task.priority] || "secondary"}>
                                     {task.priority}
                                   </Badge>
                                 </td>
 
                                 {/* Fecha Límite */}
-                                <td className="align-middle">
+                                <td className="align-middle text-white">
                                   <small>{task.due_date}</small>
                                 </td>
 
                                 {/* Progreso */}
-                                <td className="align-middle">
+                                <td className="align-middle text-white">
                                   <div className="d-flex align-items-center gap-2">
                                     <ProgressBar
                                       now={task.progress_percentage}
@@ -341,7 +341,7 @@ function TableView({ columns, tasks, onEditTask, onDeleteTask, onDragEnd, refres
                                   <div className="d-flex gap-2">
                                     <PencilSquare
                                       role="button"
-                                      className="text-primary"
+                                      className="text-orange"
                                       size={18}
                                       onClick={() => onEditTask(task)}
                                       title="Editar tarea"
