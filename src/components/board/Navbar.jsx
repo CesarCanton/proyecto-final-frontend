@@ -42,10 +42,9 @@ function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
   }, [boardId]);
   return (
     <>
-      <Navbar expand="lg" className="custom-navbar shadow-sm w-100 border-bottom border-top-orange">
-
-        <Container className="d-flex justify-content-between">
-          <Navbar.Brand href="#home" className="board-title loading-text">
+      <Navbar className="custom-navbar shadow-sm w-100 border-bottom border-top-orange">
+        <Container fluid className="navbar-flex">
+          <div className="navbar-title">
             {loading ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -54,27 +53,27 @@ function NavbarComponent({ boardId, onColumnCreated, viewMode, setViewMode }) {
             ) : (
               boardName
             )}
-          </Navbar.Brand>
+          </div>
 
-          <div className="d-flex gap-3">
+          <div className="navbar-actions">
             <button
-              className="btn btn-outline-orange btn-navbar d-flex align-items-center gap-2"
+              className="btn btn-outline-orange btn-navbar"
               onClick={toggleView}
             >
-              <i className={`fas ${viewMode === "columns" ? "fa-table" : "fa-columns"}`}></i>
+              <i className={`fas ${viewMode === "columns" ? "fa-table" : "fa-columns"} me-2`}></i>
               {viewMode === "columns" ? "Vista tabla" : "Vista columnas"}
             </button>
             <button
-              className="btn btn-orange btn-navbar d-flex align-items-center gap-2"
+              className="btn btn-orange btn-navbar"
               onClick={handleShowModal}
             >
-              <i className="fas fa-plus"></i>
+              <i className="fas fa-plus me-2"></i>
               Agregar Columna
             </button>
           </div>
-
         </Container>
       </Navbar>
+
 
       <CreateColumnModal
         show={showModal}

@@ -22,6 +22,7 @@ function Board({ boardId, onBoardSelect }) {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
+  const [showSidebar, setShowSidebar] = useState(true);
   const [viewMode, setViewMode] = useState("columns"); // 'columns' | 'table'  // Función para manejar la creación de nueva columna
   const handleColumnCreated = async () => {
     await loadBoard();
@@ -157,20 +158,42 @@ function Board({ boardId, onBoardSelect }) {
     }
   };
 
+  const handleBoardSelect = (id) => {
+    onBoardSelect(id); // actualiza el boardId
+
+    // Si está en modo móvil, cerrar el sidebar
+    if (window.innerWidth < 768) {
+      setShowSidebar(false);
+    }
+  };
+
+
   // Mostrar mensaje si no hay board seleccionado
   if (!boardId) {
     return (
       <>
-        {/* <NavbarComponent/> */}
-        <div className="boardWrapper">
-          <Dashboard onBoardSelect={onBoardSelect} />
-          <div className="boardContent d-flex justify-content-center align-items-center">
-            <div className="text-center">
-              <h3>Selecciona un tablero</h3>
-              <p>Elige un tablero del sidebar para comenzar a trabajar</p>
+
+        <div className="boardWrapper no-board-selected">
+          {showSidebar && (
+            <Dashboard onBoardSelect={handleBoardSelect} />
+          )}
+
+
+          <div className="boardContent d-flex flex-column align-items-center justify-content-center">
+            <div className="tableros-header text-center mb-4">
+              <h4 className="text-orange fw-bold mb-2">Tableros</h4>
+              <hr className="orange-line" />
+            </div>
+
+            <div className="empty-board-message text-center">
+              <i className="fas fa-clipboard-list fa-3x text-orange mb-3"></i>
+              <h3 className="text-orange fw-bold">Selecciona un tablero</h3>
+              <p className="text-light">Elige un tablero del sidebar para comenzar a trabajar</p>
             </div>
           </div>
         </div>
+
+
       </>
     );
   }
@@ -183,8 +206,18 @@ function Board({ boardId, onBoardSelect }) {
         viewMode={viewMode}
         setViewMode={setViewMode}
       />
+      <button
+        className="hamburger-toggle d-md-none"
+        onClick={() => setShowSidebar(!showSidebar)}
+      >
+        <i className="fas fa-bars me-2"></i> Tableros
+      </button>
+
       <div className="boardWrapper">
-        <Dashboard onBoardSelect={onBoardSelect} selectedBoardId={boardId} />
+        {showSidebar && (
+          <Dashboard onBoardSelect={handleBoardSelect} selectedBoardId={boardId} />
+        )}
+
         <div className="boardContent" data-view={viewMode}>
           {viewMode === "columns" ? (
             <DragDropContext onDragEnd={onDragEnd}>
@@ -226,7 +259,7 @@ function Board({ boardId, onBoardSelect }) {
                               onDeleteTask={handleDeleteTask}
                               onColumnUpdated={handleColumnUpdated}
                               onDeleteColumn={handleColumnDeleted}
-                              // dragHandleProps={draggableProvided.dragHandleProps}
+                            // dragHandleProps={draggableProvided.dragHandleProps}
                             />
                           </div>
                         )}
