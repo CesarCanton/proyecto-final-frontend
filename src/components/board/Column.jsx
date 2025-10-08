@@ -103,7 +103,7 @@ function Column({
 			<Card className="p-2 shadow-sm">
 				{/* capacidad para mover la columna deshabilitada */}
 				{/* <Card.Header {...dragHandleProps} */}
-				<Card.Header
+				<Card.Header className="column-action-buttons"
 					onMouseEnter={() => !isEditing && setIsHovered(true)}
 					onMouseLeave={() => setIsHovered(false)}
 					style={{
@@ -204,7 +204,7 @@ function Column({
 					</div>
 				</Card.Header>
 
-				<Card.Body>
+				<Card.Body >
 					<Droppable droppableId={id.toString()} type="task">
 						{(dropProvided) => (
 							<div
@@ -219,6 +219,7 @@ function Column({
 							>
 								{tasks.map((task, idx) => (
 									<TaskCard
+									
 										key={task.id}
 										task={task}
 										draggableId={task.id.toString()}
