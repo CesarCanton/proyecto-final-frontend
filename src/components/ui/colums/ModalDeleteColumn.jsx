@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Alert, Spinner } from 'react-bootstrap';
 import { deleteColumn } from '../../../services/columnService';
-import '../../board/boardStyles.css'; // Asegúrate que esté cargado
+import '../../board/boardStyles.css'; 
 
 function DeleteColumnModal({ show, onHide, column, onColumnDeleted, hasTasksInColumn }) {
   const [isLoading, setIsLoading] = useState(false);

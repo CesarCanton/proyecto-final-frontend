@@ -8,7 +8,6 @@ import "./boardStyles.css";
 import { getColumnsWithTasks, updateTask } from "../../services/taskAPI";
 import TaskEditModal from "../ui/tasks/TaskEditModal";
 import TaskDeleteModal from "../ui/tasks/TaskDeleteModal";
-
 import TableView from "./TableView";
 
 
@@ -99,9 +98,7 @@ function Board({ boardId, onBoardSelect }) {
   }, [boardId]);
 
   const onDragEnd = (result) => {
-    //Source: de donde se arrastra
-    //Destination: a donde se suelta
-    //Type: tipo de elemento que se esta moviendo (columna o tarea)
+   
     const { source, destination, type } = result;
     if (!destination) return;
     //Logica para mover columnas (Desahbilitada por ahora)

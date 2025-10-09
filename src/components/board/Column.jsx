@@ -16,7 +16,6 @@ function Column({
 	onDeleteTask,
 	onColumnUpdated,
 	onDeleteColumn,
-	// dragHandleProps,
 }) {
 	const [isHovered, setIsHovered] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
