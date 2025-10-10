@@ -7,5 +7,6 @@
   <li>Díaz Vásquez, Bryan Alexander</li>
   <li>Canton Rivas, Julio Cesar</li>
   <li>Guadron Reyes, Diego Alejandro</li>
+<li>Erick Gabriel Girón Alvarenga</li>
 </ul>
 Deploy: https://kanban-g2.netlify.app/
